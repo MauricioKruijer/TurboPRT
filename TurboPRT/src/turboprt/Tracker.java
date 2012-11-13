@@ -22,19 +22,19 @@ public class Tracker extends Thread {
 		podcar = new Podcar();
 		podcar.setId(1);
 		podcar.setMacAddress("0007809B2AF9");
-		//this.addPodcar(podcar);
+		this.addPodcar(podcar);
 
 		// N3liver
 		podcar = new Podcar();
 		podcar.setId(2);
 		podcar.setMacAddress("00078096E0E1");
-		//this.addPodcar(podcar);
+		this.addPodcar(podcar);
 
 		// WT11-A
 		podcar = new Podcar();
 		podcar.setId(3);
 		podcar.setMacAddress("0007804C4657");
-		//this.addPodcar(podcar);
+		this.addPodcar(podcar);
 
 		// Cyndaquil
 		podcar = new Podcar();
@@ -95,10 +95,13 @@ public class Tracker extends Thread {
 								}
 							}.start();
 
+							// Stuur 2 BS commands zodat ie de rest wel pakt
+							device.sendCommand("nop");
+							device.sendCommand("nop");
+							
 							// Connection beep
-							device.sendCommand("nop");
-							device.sendCommand("nop");
 							device.sendCommand("ATn");
+							device.sendCommand("ATN");
 
 					
 							// Soort van vierkantje rijden
@@ -120,9 +123,6 @@ public class Tracker extends Thread {
 							Thread.sleep(650);
 							device.sendCommand("ATs\240r\240");
 							device.sendCommand("ATs\000r\000");
-							
-							
-							device.sendCommand("ATN");
 							
 						} catch (InterruptedException ex) {
 							Logger.getLogger(Tracker.class.getName()).log(Level.SEVERE, null, ex);

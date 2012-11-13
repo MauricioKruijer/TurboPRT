@@ -1,5 +1,6 @@
 package turboprt;
 
+import bluetooth.BluetoothService;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +14,38 @@ public class Podcar {
 	private ArrayList<Destination> destinations;
 	private boolean driving;
 	private String macAddress;
+	
+	private BluetoothService btService;
+	private boolean connected = false;
 
+	public boolean connect()
+	{
+		try
+		{
+			System.out.println("Connecting to "+this.macAddress+"...");
+			btService = new BluetoothService();
+			if (btService.connectToDevice(this.macAddress, 1)) {
+				System.out.println("Connected to "+this.macAddress);
+				this.connected = true;
+				return true;
+			} else {
+				System.out.println("Failed to connect to "+this.macAddress);
+				return false;
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Bluetooth error");
+			return false;
+		}
+	}
+	
+	public void sendCommand(String command)
+	{
+		System.out.println("Sending command to "+this.macAddress+": "+command);
+		btService.sendCommand(command);
+	}
+	
 	public void turn(int direction) {
 		// turn
 	}
@@ -68,6 +100,10 @@ public class Podcar {
 
 	public void setDriving(boolean driving) {
 		this.driving = driving;
+	}
+
+	public boolean isConnected() {
+		return connected;
 	}
 
 	public String getMacAddress() {

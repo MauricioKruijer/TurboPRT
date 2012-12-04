@@ -6,21 +6,21 @@ package turboprt;
  */
 public class Location {
 	
-	private double latitude, longitude;
+	private int latitude, longitude;
 
-	public double getLatitude() {
+	public int getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(double latitude) {
+	public void setLatitude(int latitude) {
 		this.latitude = latitude;
 	}
 
-	public double getLongitude() {
+	public int getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(double longitude) {
+	public void setLongitude(int longitude) {
 		this.longitude = longitude;
 	}
 }

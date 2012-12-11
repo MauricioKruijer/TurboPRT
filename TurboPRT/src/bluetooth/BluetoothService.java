@@ -20,7 +20,13 @@ public class BluetoothService {
         //Open stream sender
         strmSender = new StreamSender(devConnection);
 
+        //Open stream listener
+//        strmListener = new StreamListener(this, devConnection);
+
+//        new BothStatus(devConnection, strmSender, guiController);
+//
         this.connected = true;
+//        guiController.getFrameMain().setConnectedView(GlobalLib.connected);
         return true;
     }
 
@@ -30,6 +36,7 @@ public class BluetoothService {
         devConnection.disconnect();
         
         this.connected = false;
+//        guiController.getFrameMain().setConnectedView(GlobalLib.connected);
     }
 
     public void sendCommand(String command){

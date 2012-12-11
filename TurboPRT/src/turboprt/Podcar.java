@@ -1,7 +1,6 @@
 package turboprt;
 
 import bluetooth.BluetoothService;
-import bluetooth.StreamListener;
 import java.util.ArrayList;
 
 /**
@@ -17,10 +16,10 @@ public class Podcar {
 	private Status status;
 	private String macAddress;
 	
-	public BluetoothService btService;
+	private BluetoothService btService;
 	private boolean connected = false;
 	
-	public enum Status {DRIVING, WAITING, CHARGING, BLOCKED, DISCONNECTED};
+	public enum Status {DRIVING, WAITING, CHARGING};
 	
 	private ArrayList<PodcarListener> listeners = new ArrayList<PodcarListener>();
 
@@ -38,11 +37,6 @@ public class Podcar {
 			if (btService.connectToDevice(this.macAddress, 1)) {
 				System.out.println("Connected to "+this.macAddress);
 				this.connected = true;
-				this.status = Status.WAITING;
-				
-				new StreamListener(this);
-				
-				broadcastChange();
 				return true;
 			} else {
 				System.out.println("Failed to connect to "+this.macAddress);
@@ -56,51 +50,10 @@ public class Podcar {
 		}
 	}
 	
-	public void disconnect()
-	{
-		this.btService.disconnect();
-		this.connected = false;
-		
-		setStatus(Status.DISCONNECTED);
-		
-		System.out.println(this.getName()+" got disconnected.");
-	}
-	
 	public void sendCommand(String command)
 	{
-		if(this.connected == true)
-		{
-			System.out.println("Sending command to "+this.macAddress+": "+command);
-			btService.sendCommand(command);
-		}
-		else
-		{
-			System.out.println("Device is not connected!");
-		}
-	}
-	
-	public void processCommand(String command)
-	{
-		System.out.println(""+command);
-		if(command.equals("ATDRV") && this.getStatus() != Podcar.Status.BLOCKED)
-		{
-			if(this.getStatus() == Podcar.Status.WAITING)
-			{
-				this.setStatus(Podcar.Status.DRIVING);
-			}
-			else
-			{
-				this.setStatus(Podcar.Status.WAITING);
-			}
-		}
-		else if(command.equals("E666"))
-		{
-			this.setStatus(Podcar.Status.BLOCKED);
-		}
-		else if(command.equals("!E666"))
-		{
-			this.setStatus(Podcar.Status.WAITING);
-		}
+		System.out.println("Sending command to "+this.macAddress+": "+command);
+		btService.sendCommand(command);
 	}
 	
 	public void turn(int direction) {
@@ -188,10 +141,6 @@ public class Podcar {
 	public boolean isDriving() {
 		return (status == Status.DRIVING);
 	}
-	
-	public boolean isAvailable() {
-		return (status != Status.DRIVING && status != Status.BLOCKED);
-	}
 
 	public Status getStatus()
 	{
@@ -201,15 +150,17 @@ public class Podcar {
 	public String getStatusString()
 	{
 		if(status == Status.CHARGING)
+		{
 			return "Charging";
+		}
 		else if(status == Status.DRIVING)
+		{
 			return "Driving";
-		else if(status == Status.BLOCKED)
-			return "Blocked";
-		else if(status == Status.DISCONNECTED)
-			return "Disconnected";
+		}
 		else
+		{
 			return "Waiting";
+		}
 	}
 	
 	public void setStatus(Status status) {

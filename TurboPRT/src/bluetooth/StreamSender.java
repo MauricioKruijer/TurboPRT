@@ -35,12 +35,7 @@ public class StreamSender implements Runnable{
             if(strm_out == null) strm_out = devCon.getConnection().openOutputStream();
             strm_out.write((command + "\n").getBytes());
         } catch (IOException ex) {
-			
-				System.out.println("Lost connection.");
-//				device.disconnect();
-				return;
-			
-//            Logger.getLogger(DeviceConnection.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DeviceConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

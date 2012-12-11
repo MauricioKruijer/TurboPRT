@@ -43,13 +43,6 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
 			destX.setText(""+device.getDestinations().get(0).getLocation().getLatitude());
 			destY.setText(""+device.getDestinations().get(0).getLocation().getLongitude());
 		}
-		else
-		{
-			destX.setText("0");
-			destY.setText("0");
-		}
-		
-		connectButton.setEnabled(!device.isConnected());
 	}
 
 	/**
@@ -79,11 +72,6 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
         destX = new javax.swing.JLabel();
         destY = new javax.swing.JLabel();
         startButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        connectButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,11 +86,6 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
         });
 
         changeDestButton.setText("Change destination");
-        changeDestButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                changeDestButtonActionPerformed(evt);
-            }
-        });
 
         jLabel2.setText("Current passengers:");
 
@@ -139,26 +122,6 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jButton1.setText("Send command");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        connectButton.setText("Connect");
-        connectButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                connectButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Send RAW command");
-
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,53 +129,45 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane1)
+                    .add(stopButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(botname, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(layout.createSequentialGroup()
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(layout.createSequentialGroup()
-                                        .add(jLabel2)
-                                        .add(18, 18, 18)
-                                        .add(passengers, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .add(layout.createSequentialGroup()
-                                        .add(jLabel6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                            .add(jLabel7)
-                                            .add(jLabel8))
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                            .add(locY)
-                                            .add(locX))))
-                                .add(35, 35, 35)
+                                .add(jLabel2)
+                                .add(18, 18, 18)
+                                .add(passengers, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .add(layout.createSequentialGroup()
+                                .add(jLabel6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jLabel3)
-                                    .add(layout.createSequentialGroup()
-                                        .add(jLabel10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 96, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                            .add(layout.createSequentialGroup()
-                                                .add(jLabel9)
-                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                                .add(destY))
-                                            .add(layout.createSequentialGroup()
-                                                .add(jLabel11)
-                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                                .add(destX))
-                                            .add(status)))))
-                            .add(jLabel1)
-                            .add(jButton1))
-                        .add(0, 75, Short.MAX_VALUE))
-                    .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                            .add(startButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(stopButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 138, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(jLabel7)
+                                    .add(jLabel8))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(locY)
+                                    .add(locX))))
+                        .add(35, 35, 35)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, connectButton)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, changeDestButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 191, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                            .add(jLabel3)
+                            .add(layout.createSequentialGroup()
+                                .add(jLabel10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 96, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(layout.createSequentialGroup()
+                                        .add(jLabel9)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(destY))
+                                    .add(layout.createSequentialGroup()
+                                        .add(jLabel11)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(destX))
+                                    .add(status))))
+                        .add(0, 29, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .add(startButton)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(changeDestButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 191, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -242,19 +197,11 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
                     .add(destY))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(startButton)
-                    .add(connectButton))
+                    .add(changeDestButton)
+                    .add(startButton))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(stopButton)
-                    .add(changeDestButton))
-                .add(23, 23, 23)
-                .add(jLabel1)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jButton1)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .add(stopButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -263,7 +210,7 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
         // TODO add your handling code here:
 		
-		this.device.sendCommand("#s\000r\000");
+		this.device.sendCommand("ATs\000r\000");
 		System.out.println("STAHP!");
 		
     }//GEN-LAST:event_stopButtonActionPerformed
@@ -271,25 +218,10 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         // TODO add your handling code here:
 		
-		this.device.sendCommand("#s\240r\240");
+		this.device.sendCommand("ATs\240r\240");
 		System.out.println("Starting engines!");
 		
     }//GEN-LAST:event_startButtonActionPerformed
-
-    private void changeDestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeDestButtonActionPerformed
-        // TODO add your handling code here:
-		
-    }//GEN-LAST:event_changeDestButtonActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-		this.device.sendCommand(this.jTextArea1.getText());
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
-        // TODO add your handling code here:
-		this.device.connect();
-    }//GEN-LAST:event_connectButtonActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -328,11 +260,8 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botname;
     private javax.swing.JButton changeDestButton;
-    private javax.swing.JButton connectButton;
     private javax.swing.JLabel destX;
     private javax.swing.JLabel destY;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
@@ -341,8 +270,6 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel locX;
     private javax.swing.JLabel locY;
     private javax.swing.JLabel passengers;

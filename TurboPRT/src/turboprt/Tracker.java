@@ -2,8 +2,6 @@ package turboprt;
 
 import bluetooth.BluetoothService;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -83,48 +81,12 @@ public class Tracker extends Thread implements PodcarListener {
 					
 					if(device.isConnected())
 					{
-						try {
-							// Add this new bot to the UI
-							TurboPRT.gui.addRow(device);
-							
-							// Stuur 2 BS commands zodat ie de rest wel pakt
-							device.sendCommand("nop");
-							device.sendCommand("nop");
-							
-							device.sendCommand("ATL01");
-							
-//							// Connection beep
-//							device.sendCommand("ATn");
-//							device.sendCommand("ATN");
-//
-//					
-//							// Soort van vierkantje rijden
-//							device.sendCommand("ATs\240r\240");
-//							Thread.sleep(1000);
-//							device.sendCommand("ATs\000r\240");
-//							Thread.sleep(650);
-//							device.sendCommand("ATs\240r\240");
-//							Thread.sleep(1000);
-//							device.sendCommand("ATs\000r\240");
-//							Thread.sleep(650);
-//							device.sendCommand("ATs\240r\240");
-//							Thread.sleep(1000);
-//							device.sendCommand("ATs\000r\240");
-//							Thread.sleep(650);
-//							device.sendCommand("ATs\240r\240");
-//							Thread.sleep(1000);
-//							device.sendCommand("ATs\000r\240");
-							
-							Thread.sleep(3000);
-							System.out.println("Driving");
-							device.setStatus(Podcar.Status.DRIVING);
-							
-//							device.sendCommand("ATs\240r\240");
-//							device.sendCommand("ATs\000r\000");
-//							
-						} catch (InterruptedException ex) {
-							Logger.getLogger(Tracker.class.getName()).log(Level.SEVERE, null, ex);
-						}
+						// Add this new bot to the UI
+						TurboPRT.gui.addRow(device);
+
+						// Stuur 2 BS commands zodat ie de rest wel pakt
+						device.sendCommand("nop");
+						device.sendCommand("nop");
 					}
 				}
 			};

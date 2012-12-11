@@ -77,7 +77,7 @@ public class MainInterface extends javax.swing.JFrame {
 		
 		jTable1.setValueAt(podcar.getPassengers().size(), index, 5);
 
-		jTable1.setValueAt(podcar.isDriving() ? "No" : "Yes", index, 6);
+		jTable1.setValueAt(podcar.isAvailable() ? "Yes" : "No", index, 6);
 		jTable1.setValueAt(podcar.getStatusString(), index, 7);
 	}
 

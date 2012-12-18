@@ -26,6 +26,7 @@ public class Podcar {
 
 	Podcar()
 	{
+		this.id = -1;
 		this.location = new Location();
 	}
 	

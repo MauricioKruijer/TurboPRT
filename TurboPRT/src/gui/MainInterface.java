@@ -59,6 +59,9 @@ public class MainInterface extends javax.swing.JFrame {
 	{
 		int index = podcar.getId();
 		
+		// Skip update if the id isnt set yet
+		if(index == -1) return;
+		
 		jTable1.setValueAt(podcar.getName(), index, 0);
 		
 		jTable1.setValueAt(podcar.getLocation().getLatitude(), index, 1);

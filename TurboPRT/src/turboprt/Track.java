@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  *
  * @author marcel
- */
+ */// deze klasse 
 public class Track {
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 

@@ -106,7 +106,7 @@ public class Tracker extends Thread implements PodcarListener {
 						device.sendCommand("nop");
 					}
 				}
-			}.start();
+			}.start();  //..
 		}
 	}
 	
@@ -115,7 +115,7 @@ public class Tracker extends Thread implements PodcarListener {
 	 * @param id
 	 * @return device
 	 * @throws Exception 
-	 */
+	 */// geeft de bijbehorende car met de ID
 	public static Podcar getPodcarById(int id) throws Exception
 	{
 		for(Podcar device : podcars)

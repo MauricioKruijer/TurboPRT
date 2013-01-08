@@ -3,7 +3,7 @@ package turboprt;
 /**
  *
  * @author marcel
- */
+ */ //location is een bepaalde punt in de baan, dat heeft een Latitude en Longtitude waarde van type int.
 public class Location {
 	
 	private int latitude, longitude;

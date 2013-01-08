@@ -17,13 +17,13 @@ public class BluetoothService {
         if(!devConnection.connect())
             return false;
 
-        //Open stream sender
+        //Open stream sender 
         strmSender = new StreamSender(devConnection);
 
         this.connected = true;
         return true;
-    }
-
+    }   
+    // laat het zien als de car niet connected aan ... is
     public void disconnect(){
         strmSender = null;
         strmListener = null;
@@ -31,7 +31,7 @@ public class BluetoothService {
         
         this.connected = false;
     }
-
+    // als de car verbonden is de command kan gestuurd worden
     public void sendCommand(String command){
         if(this.connected)
             strmSender.sendCommand(command);

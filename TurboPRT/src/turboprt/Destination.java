@@ -1,29 +1,42 @@
 package turboprt;
 
 /**
- *
- * @author marcel
- */// deze class gebruiken wij om de destination van de podcar te bepalen.
-  // de podcar geeft zijn location aan           
+ * This class represents a destination used by the podcars
+ * @author Marcel
+ */
 public class Destination {
-        // type .....
-	public static enum Type{REST, PASSENGER, GOAL};
-	// location is waar de podcar zich vind
+	public static enum Type {REST, PASSENGER, GOAL};
 	private Location location;
 	private Type type;
-        // via de methodes get en setLocation kunnen de andere klassen deze atribuut gebruiken 
+    
+	/**
+	 * Get the location for this destination
+	 * @return location
+	 */
 	public Location getLocation() {
 		return location;
 	}
-        // de software sets de locatoin
+	
+	/**
+	 * Set the location for this destination
+	 * @param location 
+	 */
 	public void setLocation(Location location) {
 		this.location = location;
 	}
 
+	/**
+	 * Get the type of this destination
+	 * @return type
+	 */
 	public Type getType() {
 		return type;
 	}
 
+	/**
+	 * Set the type of this destination
+	 * @param type 
+	 */
 	public void setType(Type type) {
 		this.type = type;
 	}

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  * This class monitors all of the ivibots
- * @author marcel
+ * @author Marcel
  */
 public class Tracker extends Thread implements PodcarListener {
 

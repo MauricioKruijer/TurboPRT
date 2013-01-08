@@ -3,8 +3,8 @@ package turboprt;
 import gui.MainInterface;
 
 /**
- *
- * @author marcel
+ * This is the starting point of the program
+ * @author Marcel
  */
 public class TurboPRT {
 
@@ -12,11 +12,10 @@ public class TurboPRT {
 	
 	public static void main(String[] args) {
 		
-		TurboPRT.gui.setVisible(true); //..
+		// Display the main UI
+		TurboPRT.gui.setVisible(true);
 		
 		// Create thread for the tracker class.
-		Tracker tracker = new Tracker();
-		tracker.start();
-
+		new Tracker().start();
 	}
 }

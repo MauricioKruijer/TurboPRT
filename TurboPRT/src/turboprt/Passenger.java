@@ -1,27 +1,44 @@
 package turboprt;
 
 /**
- *
- * @author marcel
- */// passenger heeft een location van type klasse Locatoin en een destination waar naar toe gaat
+ * This class represents a passenger which use the podcars
+ * @author Marcel
+ */
 public class Passenger {
 	private Location location;
 	private Destination destination;
-	// deze geeft true als de destination aangegeven is.
-	private boolean enterDestination() {
+	/**
+	 * The passenger enters it's destination
+	 * @param dest
+	 * @return 
+	 */
+	private boolean enterDestination(Destination dest) {
 		return true;
 	}
-	// geeft true als de passenger zijn destination verandert
-	private boolean changeDestination()	{
+
+	/**
+	 * The passenger changes it's destination
+	 * @param dest
+	 * @return 
+	 */
+	private boolean changeDestination(Destination dest) {
 		return true;
 	}
-	// de passenger gaat in de podcar is
+	
+	/**
+	 * The passenger enters the podcar
+	 */
 	public void enterPodcar() {
 		
 	}
-	// deze geeft of van de passenger de podcar heeft uitgestopt
+
+	/**
+	 * The passenger leaves the podcar
+	 */
 	public void leavePodcar() {
 		
 	}
+	
+	
 	
 }

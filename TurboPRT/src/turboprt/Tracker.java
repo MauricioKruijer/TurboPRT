@@ -4,7 +4,7 @@ import bluetooth.BluetoothService;
 import java.util.ArrayList;
 
 /**
- *
+ * This class monitors all of the ivibots
  * @author marcel
  */
 public class Tracker extends Thread implements PodcarListener {
@@ -12,66 +12,83 @@ public class Tracker extends Thread implements PodcarListener {
 	private static ArrayList<Podcar> podcars = new ArrayList<Podcar>();
 	private BluetoothService device = null;
 
+	/**
+	 * Connect to the ivibots
+	 */
 	Tracker() {
 
 		Podcar podcar;
 
 		// Charmender
 		podcar = new Podcar();
-//		podcar.setId(1);
 		podcar.setName("Charmender");
 		podcar.setMacAddress("0007809B2AF9");
 		this.addPodcar(podcar);
 
 		// N3liver
 		podcar = new Podcar();
-//		podcar.setId(2);
 		podcar.setName("N3liver");
 		podcar.setMacAddress("00078096E0E1");
 		this.addPodcar(podcar);
 
-		// WT11-A
+		// Pikachu
 		podcar = new Podcar();
-//		podcar.setId(3);
-		podcar.setName("WT11-A");
+		podcar.setName("Pikachu");
 		podcar.setMacAddress("0007804C4657");
 		this.addPodcar(podcar);
 
 		// Cyndaquil
 		podcar = new Podcar();
-//		podcar.setId(4);
 		podcar.setName("Cyndaquil");
 		podcar.setMacAddress("0007804C4730");
 		this.addPodcar(podcar);
 	}
 
+	/**
+	 * Get the current coordinates for an ivibot
+	 * @param id
+	 */
 	public void locatePodcar(int id) {
+		
 	}
 
+	/**
+	 * Add a podcar to the list
+	 * @param p 
+	 */
 	private void addPodcar(Podcar p) {
 		this.podcars.add(p);
 	}
 
+	/**
+	 * Remove a podcar from the list
+	 * @param p 
+	 */
 	private void removePodcar(Podcar p) {
 		this.podcars.remove(p);
 	}
 
+	/**
+	 * Get the list of podcars
+	 * @return ArrayList<Podcar>
+	 */
 	private ArrayList<Podcar> getPodcars() {
 		return podcars;
 	}
 
+	/**
+	 * Start the thread
+	 */
 	@Override
 	public void run() {
 
-		ArrayList<Thread> threadArray = new ArrayList<Thread>();
-		
 		for(final Podcar device : this.podcars)
 		{
 			// Register for podcar updates
 			device.addListener(this);
 			
-			Thread thread = new Thread(){
-
+			// Create seperate threads for each ivibot
+			new Thread(){
 				@Override
 				public void run() {
 					super.run();
@@ -84,18 +101,21 @@ public class Tracker extends Thread implements PodcarListener {
 						// Add this new bot to the UI
 						TurboPRT.gui.addRow(device);
 
-						// Stuur 2 BS commands zodat ie de rest wel pakt
+						// Send 2 nop commands so the bot can receive sequential commands
 						device.sendCommand("nop");
 						device.sendCommand("nop");
 					}
 				}
-			};
-			
-			thread.start();
-			threadArray.add(thread);
+			}.start();
 		}
 	}
 	
+	/**
+	 * Get a podcar object by id
+	 * @param id
+	 * @return device
+	 * @throws Exception 
+	 */
 	public static Podcar getPodcarById(int id) throws Exception
 	{
 		for(Podcar device : podcars)
@@ -107,8 +127,9 @@ public class Tracker extends Thread implements PodcarListener {
 		throw new Exception("Unknown podcar");
 	}
 
-	/*
+	/**
 	 * Update UI on podcar data change
+	 * @param device 
 	 */
 	@Override
 	public void update(Podcar device) {

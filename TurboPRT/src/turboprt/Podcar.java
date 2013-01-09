@@ -21,23 +21,23 @@ public class Podcar {
     public BluetoothService btService;
     private boolean connected = false;
 
-    void setIR(boolean b) {
-        this.IR = b;
-    }
-    
-    boolean getIR() {
-        return this.IR;
-    }
-
-    public enum Status {
-
-        DRIVING, WAITING, CHARGING, BLOCKED, DISCONNECTED
-    };
+    public enum Status {DRIVING, WAITING, CHARGING, BLOCKED, DISCONNECTED};
     private ArrayList<PodcarListener> listeners = new ArrayList<PodcarListener>();
 
     Podcar() {
         this.id = -1;
         this.location = new Location();
+		
+		// @TODO: Fix this
+		Location destLoc = new Location();
+		destLoc.setLatitude(127);
+		destLoc.setLongitude(337);
+		
+		Destination dest = new Destination();
+		dest.setLocation(destLoc);
+		addDestination(dest);
+		
+		System.out.println("Destination for "+getName()+": "+dest);
     }
 
     public boolean connect() {
@@ -99,8 +99,22 @@ public class Podcar {
     public void turn(int direction) {
         // turn
     }
+	
+	public void stop()
+	{
+		this.sendCommand("#S");
+	}
 
     public void blinkIR() {
+		
+    }
+	
+    void setIR(boolean b) {
+        this.IR = b;
+    }
+    
+    boolean getIR() {
+        return this.IR;
     }
 
     public void addListener(PodcarListener listener) {
@@ -142,6 +156,19 @@ public class Podcar {
     public void setLocation(Location location) {
         this.location = location;
         broadcastChange();
+		
+		Location destLoc = getCurrentDestination().getLocation();
+		
+		int margin = 10;
+		
+		if((location.getLatitude() > destLoc.getLatitude() - margin &&
+				location.getLatitude() < destLoc.getLatitude() + margin) &&
+				(location.getLongitude() > destLoc.getLongitude() - margin &&
+				location.getLongitude() < destLoc.getLongitude() + margin))
+		{
+			System.out.println(this.getName()+" reached it's destination!");
+			this.stop();
+		}
     }
 
     public ArrayList<Passenger> getPassengers() {
@@ -157,6 +184,11 @@ public class Podcar {
         return destinations;
     }
 
+	public Destination getCurrentDestination()
+	{
+		return this.destinations.get(0);
+	}
+	
     public void setDestinations(ArrayList<Destination> destinations) {
         this.destinations = destinations;
         broadcastChange();

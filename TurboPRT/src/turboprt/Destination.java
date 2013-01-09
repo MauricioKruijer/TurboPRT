@@ -27,4 +27,8 @@ public class Destination {
 		this.type = type;
 	}
 	
+	public String toString()
+	{
+		return getLocation()+" ("+getType()+")";
+	}
 }

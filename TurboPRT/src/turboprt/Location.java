@@ -23,4 +23,9 @@ public class Location {
 	public void setLongitude(int longitude) {
 		this.longitude = longitude;
 	}
+	
+	public String toString()
+	{
+		return getLatitude()+", "+getLongitude();
+	}
 }

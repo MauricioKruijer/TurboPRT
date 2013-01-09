@@ -43,14 +43,14 @@ public class Tracker extends Thread implements PodcarListener {
         Podcar podcar;
 
         trackerThread.start();
-/*
+/**/
         // Charmender
         podcar = new Podcar();
 //		podcar.setId(1);
         podcar.setName("Charmender");
         podcar.setMacAddress("0007809B2AF9");
         this.addPodcar(podcar);
-        
+    /*    
        
          // N3liver
          podcar = new Podcar();
@@ -75,11 +75,11 @@ public class Tracker extends Thread implements PodcarListener {
          */
         
          // WT-12A
-         podcar = new Podcar();
+         //podcar = new Podcar();
          //		podcar.setId(4);
-         podcar.setName("WT 12-A");
-         podcar.setMacAddress("00078096E0E1");
-         this.addPodcar(podcar);
+         //podcar.setName("WT 12-A");
+         //podcar.setMacAddress("00078096E0E1");
+         //this.addPodcar(podcar);
     }
 
     public void locatePodcar(int id) {
@@ -166,7 +166,7 @@ class WiiTracker extends Thread implements WiimoteListener {
             return;
         }
 
-        System.out.println("IR: " + ire.getX() + " | " + ire.getY());
+        System.out.println("IR(" + lastRequestedPodcar + ": " + ire.getX() + " | " + ire.getY());
         Location loc = new Location();
         loc.setLatitude(ire.getX());
         loc.setLongitude(ire.getY());
@@ -181,7 +181,7 @@ class WiiTracker extends Thread implements WiimoteListener {
 
             // Turn off LED
             if(Tracker.podcars.get(lastRequestedPodcar).getIR()) {
-                Thread.sleep(150);
+                Thread.sleep(500);
                 Tracker.getPodcarById(Tracker.podcars.get(lastRequestedPodcar).getId()).sendCommand("#L00#L10");
                 Tracker.podcars.get(lastRequestedPodcar).setIR(false);
             }
@@ -197,18 +197,37 @@ class WiiTracker extends Thread implements WiimoteListener {
         while (true) {
             for (Podcar p : Tracker.podcars) {
                 System.out.println("Getting podcar " + p.getName());
+                
+                if(!p.isConnected()) {
+                    System.out.println("... but is not connected. Break.");
+                    continue;
+                }
+                System.out.println("... connected.");
 
                 lastRequestedPodcar = p.getId();
 
                 // Turn on LED
                 p.sendCommand("#L01#L11");
                 p.setIR(true);
+                
+                while(p.getIR()) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(WiiTracker.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
 
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(WiiTracker.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(WiiTracker.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

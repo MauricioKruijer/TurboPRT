@@ -151,6 +151,10 @@ public class Tracker extends Thread implements PodcarListener {
     }
 }
 
+/**
+ * @TODO Verplaats dit naar een aparte file
+ * @author Jeff
+ */
 class WiiTracker extends Thread implements WiimoteListener {
 
     int lastRequestedPodcar = 0;

@@ -17,6 +17,7 @@ public class TurboPRT {
 		// Create thread for the tracker class.
 		Tracker tracker = new Tracker();
 		tracker.start();
-
+		
+		TrackInitializer.init();
 	}
 }

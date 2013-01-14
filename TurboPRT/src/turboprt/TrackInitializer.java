@@ -6,19 +6,19 @@
  * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES.
  */
-package Track;
+package turboprt;
 
+import gui.LoadCoordinates;
 import java.util.ArrayList;
-import turboprt.Location;
 
 /**
- *
+ * Is dit niet gewoon de Track class?
  * @author Mark Blaas
  */
 public class TrackInitializer {
 
-    int[][] locations = new int[Intersection.numberOfIntersections][Intersection.numberOfIntersections];
-    int[][][] connections = {
+    public static int[][] locations = new int[Intersection.numberOfIntersections][Intersection.numberOfIntersections];
+    public static int[][][] connections = {
         /*  Intersection 0  */ {{1,10},{4,5},{5,10}},//Intersect0 connection {{from 0 to 1 cost 5},{from 0 to 4 cost 10}},
         /*  Intersection 1  */ {{0,10},{2,12},{6,10}}, //Intersect1 connections  {{from  1 to 0 cost 1}, {from 1 to 2 cost 1}}
         /*  Intersection 2  */ {{1,12},{3,8},{7,12}},
@@ -34,10 +34,13 @@ public class TrackInitializer {
         /*  Intersection 12 */ {{10,10},{13,16}},
         /*  Intersection 13 */ {{8,16},{11,8},{12,16}},
     };
+	
+	static ArrayList<Intersection> intersections;
+	static Intersection currentIntersection;
 
-    public void init() {
+    public static void init() {
 
-        ArrayList<Intersection> intersections = new ArrayList<>();
+        intersections = new ArrayList<Intersection>();
 
         //Loop to create all intersections
         for (int i = 0; i < Intersection.numberOfIntersections; i++) {
@@ -47,11 +50,45 @@ public class TrackInitializer {
         
         //Loop for creating connections between intersections...
         for (int i = 0; i < Intersection.numberOfIntersections; i++) { //For every intersection,
-            for (int j = 0; j < connections.length; j++) { //For evry connection in connections[][][]
+            for (int j = 0; j < connections[i].length; j++) { //For evry connection in connections[][][]
                 //Add the connection and cost to the intersection object. 
                 intersections.get(i).addConnection(intersections.get(connections[i][j][0]), connections[i][j][1]);
             }
 
         }
     }
+	
+	public static void calibrate(LoadCoordinates loader)
+	{
+		try
+		{
+			currentIntersection = getNextUnknownIntersection();
+			loader.displayIntersection(currentIntersection);
+			
+			/*
+			 * @TODO Make this dynamic with IR
+			 */
+			currentIntersection.setLocation(new Location(10, 10));
+			
+			for(Intersection intersection : intersections)
+			{
+				System.out.println(intersection.getID()+": "+intersection.getLocation());
+			}
+		}
+		catch(Exception e)
+		{
+			loader.done();
+			//e.printStackTrace();
+		}
+	}
+	
+	public static Intersection getNextUnknownIntersection() throws Exception
+	{
+		for(Intersection intersection : intersections)
+		{
+			if(!intersection.isCalibrated())
+				return intersection;
+		}
+		throw new Exception("Unknown intersection");
+	}
 }

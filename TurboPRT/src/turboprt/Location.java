@@ -7,6 +7,16 @@ package turboprt;
 public class Location {
 	
 	private int latitude, longitude;
+	
+	public Location(int latitude, int longitude)
+	{
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+	
+	public Location(){
+		this(0,0);
+	}
 
 	public int getLatitude() {
 		return latitude;

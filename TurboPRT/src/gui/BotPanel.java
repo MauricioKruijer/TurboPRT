@@ -63,7 +63,7 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
 
         botname = new javax.swing.JLabel();
         stopButton = new javax.swing.JButton();
-        changeDestButton = new javax.swing.JButton();
+        destButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         passengers = new javax.swing.JLabel();
@@ -84,6 +84,7 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
         jButton1 = new javax.swing.JButton();
         connectButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        closeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,10 +98,10 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
             }
         });
 
-        changeDestButton.setText("Change destination");
-        changeDestButton.addActionListener(new java.awt.event.ActionListener() {
+        destButton.setText("Destinations");
+        destButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                changeDestButtonActionPerformed(evt);
+                destButtonActionPerformed(evt);
             }
         });
 
@@ -159,6 +160,13 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
 
         jLabel1.setText("Send RAW command");
 
+        closeButton.setText("Close");
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeButtonActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -168,6 +176,14 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jScrollPane1)
                     .add(botname, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                            .add(startButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(stopButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 138, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(destButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(connectButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createSequentialGroup()
@@ -202,17 +218,12 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
                                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                                 .add(destX))
                                             .add(status)))))
-                            .add(jLabel1)
-                            .add(jButton1))
-                        .add(0, 75, Short.MAX_VALUE))
+                            .add(jLabel1))
+                        .add(0, 19, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                            .add(startButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(stopButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 138, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(jButton1)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, connectButton)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, changeDestButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 191, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                        .add(closeButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -247,13 +258,15 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(stopButton)
-                    .add(changeDestButton))
+                    .add(destButton))
                 .add(23, 23, 23)
                 .add(jLabel1)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jButton1)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jButton1)
+                    .add(closeButton))
                 .addContainerGap(10, Short.MAX_VALUE))
         );
 
@@ -261,8 +274,6 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
-        // TODO add your handling code here:
-		
 		this.device.sendCommand("#s\000r\000");
 		System.out.println("STAHP!");
 		
@@ -276,20 +287,28 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
 		
     }//GEN-LAST:event_startButtonActionPerformed
 
-    private void changeDestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeDestButtonActionPerformed
-        // TODO add your handling code here:
-		
-    }//GEN-LAST:event_changeDestButtonActionPerformed
+    private void destButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destButtonActionPerformed
+		try
+		{
+			new Destinations(this.device).setVisible(true);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+    }//GEN-LAST:event_destButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
 		this.device.sendCommand(this.jTextArea1.getText());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
-        // TODO add your handling code here:
 		this.device.connect();
     }//GEN-LAST:event_connectButtonActionPerformed
+
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_closeButtonActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -317,18 +336,12 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
 			java.util.logging.Logger.getLogger(BotPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
 		//</editor-fold>
-
-		/* Create and display the form */
-//		java.awt.EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				new BotPanel().setVisible(true);
-//			}
-//		});
 	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botname;
-    private javax.swing.JButton changeDestButton;
+    private javax.swing.JButton closeButton;
     private javax.swing.JButton connectButton;
+    private javax.swing.JButton destButton;
     private javax.swing.JLabel destX;
     private javax.swing.JLabel destY;
     private javax.swing.JButton jButton1;

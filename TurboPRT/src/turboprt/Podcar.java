@@ -27,17 +27,6 @@ public class Podcar {
     Podcar() {
         this.id = -1;
         this.location = new Location();
-		
-		// @TODO: Fix this
-		Location destLoc = new Location();
-		destLoc.setLatitude(127);
-		destLoc.setLongitude(337);
-		
-		Destination dest = new Destination();
-		dest.setLocation(destLoc);
-		addDestination(dest);
-		
-		System.out.println("Destination for "+getName()+": "+dest);
     }
 
     public boolean connect() {

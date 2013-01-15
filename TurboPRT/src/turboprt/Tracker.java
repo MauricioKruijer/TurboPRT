@@ -2,23 +2,8 @@ package turboprt;
 
 import bluetooth.BluetoothService;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
-import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
-import wiiusej.wiiusejevents.physicalevents.IREvent;
-import wiiusej.wiiusejevents.physicalevents.MotionSensingEvent;
-import wiiusej.wiiusejevents.physicalevents.WiimoteButtonsEvent;
-import wiiusej.wiiusejevents.utils.WiimoteListener;
-import wiiusej.wiiusejevents.wiiuseapievents.ClassicControllerInsertedEvent;
-import wiiusej.wiiusejevents.wiiuseapievents.ClassicControllerRemovedEvent;
-import wiiusej.wiiusejevents.wiiuseapievents.DisconnectionEvent;
-import wiiusej.wiiusejevents.wiiuseapievents.GuitarHeroInsertedEvent;
-import wiiusej.wiiusejevents.wiiuseapievents.GuitarHeroRemovedEvent;
-import wiiusej.wiiusejevents.wiiuseapievents.NunchukInsertedEvent;
-import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
-import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
 /**
  *
@@ -52,18 +37,21 @@ public class Tracker extends Thread implements PodcarListener {
 		podcar.setName("Totodile");
 		podcar.setMacAddress("0007804C463D");
 		this.addPodcar(podcar);
+		TurboPRT.gui.addRow(podcar);
 
 		// Chikorita
 		podcar = new Podcar();
 		podcar.setName("Chikorita");
 		podcar.setMacAddress("0007804C4657");
 		this.addPodcar(podcar);
+		TurboPRT.gui.addRow(podcar);
 
 		// Cyndaquil
 		podcar = new Podcar();
 		podcar.setName("Cyndaquil");
 		podcar.setMacAddress("0007804C4730");
 		this.addPodcar(podcar);
+		TurboPRT.gui.addRow(podcar);
 	}
 
 	public void locatePodcar(int id) {
@@ -99,9 +87,6 @@ public class Tracker extends Thread implements PodcarListener {
 					device.connect();
 
 					if (device.isConnected()) {
-						// Add this new bot to the UI
-						TurboPRT.gui.addRow(device);
-
 						// Stuur 2 BS commands zodat ie de rest wel pakt
 						device.sendCommand("nop");
 						device.sendCommand("nop");
@@ -132,129 +117,5 @@ public class Tracker extends Thread implements PodcarListener {
 		if (device.isConnected()) {
 			TurboPRT.gui.setDeviceLine(device);
 		}
-	}
-}
-
-/**
- * @TODO Verplaats dit naar een aparte file
- * @author Jeff
- */
-class WiiTracker extends Thread implements WiimoteListener {
-
-	int lastRequestedPodcar = 0;
-
-	@Override
-	public void onButtonsEvent(WiimoteButtonsEvent wbe) {
-		//System.out.println("Button pressed");
-	}
-
-	@Override
-	public void onIrEvent(IREvent ire) {
-		if (lastRequestedPodcar == -1) {
-			return;
-		}
-
-		System.out.println("IR(" + lastRequestedPodcar + ": " + ire.getX() + " | " + ire.getY());
-		Location loc = new Location();
-		loc.setLatitude(ire.getX());
-		loc.setLongitude(ire.getY());
-
-
-		if (Tracker.podcars.isEmpty()) {
-			return;
-		}
-
-		try {
-			Tracker.getPodcarById(Tracker.podcars.get(lastRequestedPodcar).getId()).setLocation(loc);
-
-			// Turn off LED
-			if (Tracker.podcars.get(lastRequestedPodcar).getIR()) {
-				Thread.sleep(500);
-				Tracker.getPodcarById(Tracker.podcars.get(lastRequestedPodcar).getId()).sendCommand("#L00#L10");
-				Tracker.podcars.get(lastRequestedPodcar).setIR(false);
-			}
-
-			Thread.sleep(1000);
-		} catch (Exception ex) {
-			//Logger.getLogger(WiiTracker.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}
-
-	@Override
-	public void run() {
-		while (true) {
-			for (Podcar p : Tracker.podcars) {
-				if (!p.isConnected()) {
-					continue;
-				}
-
-				System.out.println("Getting podcar " + p.getName());
-				lastRequestedPodcar = p.getId();
-
-				// Turn on LED
-				p.sendCommand("#L01#L11");
-				p.setIR(true);
-
-				while (p.getIR()) {
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException ex) {
-						Logger.getLogger(WiiTracker.class.getName()).log(Level.SEVERE, null, ex);
-					}
-				}
-
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException ex) {
-					Logger.getLogger(WiiTracker.class.getName()).log(Level.SEVERE, null, ex);
-				}
-			}
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException ex) {
-				Logger.getLogger(WiiTracker.class.getName()).log(Level.SEVERE, null, ex);
-			}
-		}
-
-	}
-
-	@Override
-	public void onMotionSensingEvent(MotionSensingEvent mse) {
-	}
-
-	@Override
-	public void onExpansionEvent(ExpansionEvent ee) {
-	}
-
-	@Override
-	public void onStatusEvent(StatusEvent se) {
-	}
-
-	@Override
-	public void onDisconnectionEvent(DisconnectionEvent de) {
-	}
-
-	@Override
-	public void onNunchukInsertedEvent(NunchukInsertedEvent nie) {
-	}
-
-	@Override
-	public void onNunchukRemovedEvent(NunchukRemovedEvent nre) {
-	}
-
-	@Override
-	public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent ghie) {
-	}
-
-	@Override
-	public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent ghre) {
-	}
-
-	@Override
-	public void onClassicControllerInsertedEvent(ClassicControllerInsertedEvent ccie) {
-	}
-
-	@Override
-	public void onClassicControllerRemovedEvent(ClassicControllerRemovedEvent ccre) {
 	}
 }

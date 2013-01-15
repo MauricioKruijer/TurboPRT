@@ -15,7 +15,7 @@ public class Podcar {
     private Location location;
     private ArrayList<Passenger> passengers = new ArrayList<Passenger>();
     private ArrayList<Destination> destinations = new ArrayList<Destination>();
-    private Status status;
+    private Status status = Podcar.Status.DISCONNECTED;
     private String macAddress;
     private boolean IR = false;
     public BluetoothService btService;

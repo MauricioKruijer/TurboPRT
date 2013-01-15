@@ -6,7 +6,7 @@ package gui;
 
 import javax.swing.JFrame;
 import turboprt.Intersection;
-import turboprt.TrackInitializer;
+import turboprt.Track;
 
 /**
  *
@@ -34,10 +34,11 @@ public class LoadCoordinates extends javax.swing.JFrame {
 		
 		jLabel1.setText("Please pinpoint the following intersection:");
 		jButton1.setText("Next");
+		jButton1.setVisible(false);
 		this.isCalibrated = false;
 		
 		// Reinit the track, clear all coordinates
-		TrackInitializer.init();
+		Track.init();
 	}
 
 	public void displayIntersection(Intersection intersection)
@@ -101,7 +102,7 @@ public class LoadCoordinates extends javax.swing.JFrame {
                             .add(name, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)))
                     .add(layout.createSequentialGroup()
-                        .add(192, 192, 192)
+                        .add(201, 201, 201)
                         .add(jButton1)))
                 .addContainerGap(74, Short.MAX_VALUE))
         );
@@ -112,8 +113,9 @@ public class LoadCoordinates extends javax.swing.JFrame {
                 .add(jLabel1)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(name)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jButton1))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jButton1)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -126,7 +128,7 @@ public class LoadCoordinates extends javax.swing.JFrame {
 		}
 		else
 		{
-			TrackInitializer.calibrate(this);
+			Track.calibrate();
 		}
     }//GEN-LAST:event_jButton1ActionPerformed
 

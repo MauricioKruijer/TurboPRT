@@ -10,7 +10,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import turboprt.Podcar;
-import turboprt.TrackInitializer;
+import turboprt.Track;
 import turboprt.Tracker;
 
 /**
@@ -204,11 +204,7 @@ public class MainInterface extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         System.out.println("Starting calibration UI");
 		
-		LoadCoordinates window = new LoadCoordinates();
-		window.setVisible(true);
-		
-		TrackInitializer.calibrate(window);
-		
+		Track.calibrate();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed

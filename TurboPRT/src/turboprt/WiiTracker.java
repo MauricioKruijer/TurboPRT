@@ -10,6 +10,7 @@ package turboprt;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import wiiusej.values.IRSource;
 import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
 import wiiusej.wiiusejevents.physicalevents.IREvent;
 import wiiusej.wiiusejevents.physicalevents.MotionSensingEvent;
@@ -39,14 +40,67 @@ class WiiTracker extends Thread implements WiimoteListener {
 
     @Override
     public void onIrEvent(IREvent ire) {
+        Location loc = new Location();
         if (lastRequestedPodcar == -1) {
             return;
         }
 
-        System.out.println("IR(" + lastRequestedPodcar + ": " + ire.getX() + " | " + ire.getY());
-        Location loc = new Location();
-        loc.setLatitude(ire.getX());
-        loc.setLongitude(ire.getY());
+        IRSource points[] = ire.getIRPoints();
+
+        if (points.length == 1) {
+
+            System.out.println("IR(" + lastRequestedPodcar + ": " + points[0].getX() + " | " + points[0].getY());
+            
+            loc.setLatitude(points[0].getX());
+            loc.setLongitude(points[0].getY());
+
+
+        } else if (points.length == 2) {
+            try {
+                Tracker.getPodcarById(Tracker.podcars.get(lastRequestedPodcar).getId()).sendCommand("#L00#L10");
+                Tracker.podcars.get(lastRequestedPodcar).setIR(false);
+                Thread.sleep(1000);
+                if (points.length == 1) {
+                    //Set passenger here
+                    Location passengerLoc = new Location();
+                    passengerLoc.setLatitude(points[0].getX());
+                    passengerLoc.setLongitude(points[0].getY());
+                    
+                    Destination passengerDest = new Destination();
+                    passengerDest.setType(Destination.Type.PASSENGER);
+                    passengerDest.setLocation(passengerLoc);
+                    
+                    
+                    boolean destAdded = false;
+                    for (Podcar device : Tracker.podcars){
+                        if (device.getStatus() == Podcar.Status.CHARGING){
+                            device.addDestination(passengerDest);
+                            destAdded = true;
+                            System.out.println("dest added to " + device.getName());
+                        }
+                    }
+                    if(!destAdded){
+                        //No podcar available
+                        System.out.println("No Podcar Available");
+                    }
+                    
+                    Tracker.getPodcarById(Tracker.podcars.get(lastRequestedPodcar).getId()).sendCommand("#L01#L11");
+                    Tracker.podcars.get(lastRequestedPodcar).setIR(true);
+                }else{
+                    //Takes to long...
+                    System.out.println("IR interference...");
+                }
+
+
+
+            } catch (Exception ex) {
+                Logger.getLogger(WiiTracker.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+
+
+        }
+
 
 
         if (Tracker.podcars.isEmpty()) {
@@ -57,12 +111,12 @@ class WiiTracker extends Thread implements WiimoteListener {
             Tracker.getPodcarById(Tracker.podcars.get(lastRequestedPodcar).getId()).setLocation(loc);
 
             // Turn off LED
-            if(Tracker.podcars.get(lastRequestedPodcar).getIR()) {
+            if (Tracker.podcars.get(lastRequestedPodcar).getIR()) {
                 Thread.sleep(500);
                 Tracker.getPodcarById(Tracker.podcars.get(lastRequestedPodcar).getId()).sendCommand("#L00#L10");
                 Tracker.podcars.get(lastRequestedPodcar).setIR(false);
             }
-            
+
             Thread.sleep(1000);
         } catch (Exception ex) {
             Logger.getLogger(WiiTracker.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,8 +128,8 @@ class WiiTracker extends Thread implements WiimoteListener {
         while (true) {
             for (Podcar p : Tracker.podcars) {
                 System.out.println("Getting podcar " + p.getName());
-                
-                if(!p.isConnected()) {
+
+                if (!p.isConnected()) {
                     System.out.println("... but is not connected. Break.");
                     continue;
                 }
@@ -86,8 +140,8 @@ class WiiTracker extends Thread implements WiimoteListener {
                 // Turn on LED
                 p.sendCommand("#L01#L11");
                 p.setIR(true);
-                
-                while(p.getIR()) {
+
+                while (p.getIR()) {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException ex) {

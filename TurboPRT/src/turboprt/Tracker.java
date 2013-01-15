@@ -33,12 +33,15 @@ public class Tracker extends Thread implements PodcarListener {
 
     Tracker() {
 
+		System.err.close();
+		
         System.out.println("Connecting to wiimote");
         Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, true);
         System.out.println("wiimotes found: " + wiimotes.length);
         wiimote = wiimotes[0];
         wiimote.activateIRTRacking();
         wiimote.addWiiMoteEventListeners(new WiiTracker());
+		wiimote.addWiiMoteEventListeners(new Track());
 
         Podcar podcar;
 
@@ -192,7 +195,7 @@ class WiiTracker extends Thread implements WiimoteListener {
             
             Thread.sleep(1000);
         } catch (Exception ex) {
-            Logger.getLogger(WiiTracker.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(WiiTracker.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -200,14 +203,9 @@ class WiiTracker extends Thread implements WiimoteListener {
     public void run() {
         while (true) {
             for (Podcar p : Tracker.podcars) {
+				if(!p.isConnected()) continue;
+				
                 System.out.println("Getting podcar " + p.getName());
-                
-                if(!p.isConnected()) {
-                    System.out.println("... but is not connected. Break.");
-                    continue;
-                }
-                System.out.println("... connected.");
-
                 lastRequestedPodcar = p.getId();
 
                 // Turn on LED

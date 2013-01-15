@@ -146,17 +146,24 @@ public class Podcar {
         this.location = location;
         broadcastChange();
 		
-		Location destLoc = getCurrentDestination().getLocation();
-		
-		int margin = 10;
-		
-		if((location.getLatitude() > destLoc.getLatitude() - margin &&
-				location.getLatitude() < destLoc.getLatitude() + margin) &&
-				(location.getLongitude() > destLoc.getLongitude() - margin &&
-				location.getLongitude() < destLoc.getLongitude() + margin))
+		try
 		{
-			System.out.println(this.getName()+" reached it's destination!");
-			this.stop();
+			Location destLoc = getCurrentDestination().getLocation();
+
+			int margin = 10;
+
+			if((location.getLatitude() > destLoc.getLatitude() - margin &&
+					location.getLatitude() < destLoc.getLatitude() + margin) &&
+					(location.getLongitude() > destLoc.getLongitude() - margin &&
+					location.getLongitude() < destLoc.getLongitude() + margin))
+			{
+				System.out.println(this.getName()+" reached it's destination!");
+				this.stop();
+			}
+		}
+		catch(Exception e)
+		{
+			//e.printStackTrace();
 		}
     }
 
@@ -173,8 +180,9 @@ public class Podcar {
         return destinations;
     }
 
-	public Destination getCurrentDestination()
+	public Destination getCurrentDestination() throws Exception
 	{
+		if(this.destinations.isEmpty()) throw new Exception("No destinations");
 		return this.destinations.get(0);
 	}
 	

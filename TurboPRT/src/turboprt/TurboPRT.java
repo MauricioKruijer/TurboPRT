@@ -18,6 +18,6 @@ public class TurboPRT {
 		Tracker tracker = new Tracker();
 		tracker.start();
 		
-		TrackInitializer.init();
+		Track.init();
 	}
 }

@@ -71,7 +71,8 @@ public class Podcar {
     }
 
     public void processCommand(String command) {
-        System.out.println("" + command);
+        System.out.println("Received command from "+this.getName()+": " + command);
+		
         if (command.equals("ATDRV") && this.getStatus() != Podcar.Status.BLOCKED) {
             if (this.getStatus() == Podcar.Status.WAITING) {
                 this.setStatus(Podcar.Status.DRIVING);

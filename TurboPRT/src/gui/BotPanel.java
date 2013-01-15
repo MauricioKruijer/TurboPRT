@@ -274,17 +274,14 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
-		this.device.sendCommand("#s\000r\000");
-		System.out.println("STAHP!");
+		this.device.sendCommand("#S");
+		System.out.println("STAHP!!1!");
 		
     }//GEN-LAST:event_stopButtonActionPerformed
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-        // TODO add your handling code here:
-		
-		this.device.sendCommand("#s\240r\240");
-		System.out.println("Starting engines!");
-		
+		this.device.sendCommand("#s");
+		System.out.println("Go! Go! Go!");
     }//GEN-LAST:event_startButtonActionPerformed
 
     private void destButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destButtonActionPerformed

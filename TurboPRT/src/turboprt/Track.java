@@ -17,10 +17,10 @@ import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
 /**
- *
- * @author marcel
+ * This class represents a track on which the ivibot drives.
+ * @author Marcel
  */
-public class Track extends Thread implements WiimoteListener {
+public class Track implements WiimoteListener {
     public static int[][] locations = new int[Intersection.numberOfIntersections][Intersection.numberOfIntersections];
     public static int[][][] connections = {
         /*  Intersection 0  */ {{1,10},{4,5},{5,10}},//Intersect0 connection {{from 0 to 1 cost 5},{from 0 to 4 cost 10}},
@@ -43,26 +43,32 @@ public class Track extends Thread implements WiimoteListener {
 	static Intersection currentIntersection;
 	static LoadCoordinates loader;
 
+	/**
+	 * Initialize the track.
+	 * Create all intersection objects with empty locations (to be calibrated on run-time)
+	 */
     public static void init() {
 
         intersections = new ArrayList<Intersection>();
 
-        //Loop to create all intersections
+        // Loop to create all intersections
         for (int i = 0; i < Intersection.numberOfIntersections; i++) {
             intersections.add(i, new Intersection(i, new Location(locations[i][0], locations[i][1])));
         }
 
-        
         //Loop for creating connections between intersections...
         for (int i = 0; i < Intersection.numberOfIntersections; i++) { //For every intersection,
             for (int j = 0; j < connections[i].length; j++) { //For evry connection in connections[][][]
                 //Add the connection and cost to the intersection object. 
                 intersections.get(i).addConnection(intersections.get(connections[i][j][0]), connections[i][j][1]);
             }
-
         }
     }
 	
+	/**
+	 * Calibrate the next uncalibrated intersection.
+	 * Also display the window if called for the first time.
+	 */
 	public static void calibrate()
 	{
 		if(loader == null)
@@ -84,6 +90,11 @@ public class Track extends Thread implements WiimoteListener {
 		}
 	}
 	
+	/**
+	 * Get the next uncalibrated intersection
+	 * @return
+	 * @throws Exception 
+	 */
 	public static Intersection getNextUnknownIntersection() throws Exception
 	{
 		for(Intersection intersection : intersections)
@@ -98,17 +109,13 @@ public class Track extends Thread implements WiimoteListener {
 	public void onButtonsEvent(WiimoteButtonsEvent e) {
 	}
 
+	/**
+	 * Set the location and start calibration for the next intersection on IR event.
+	 * @param e 
+	 */
 	@Override
 	public void onIrEvent(IREvent e) {
-		//System.out.println("Got IR event");
-		
 		currentIntersection.setLocation(new Location(e.getX(), e.getY()));
-		
-//		for(Intersection intersection : intersections)
-//		{
-//			System.out.println(intersection.getID()+": "+intersection.getLocation());
-//		}
-		
 		Track.calibrate();
 	}
 

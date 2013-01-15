@@ -5,8 +5,8 @@ import bluetooth.StreamListener;
 import java.util.ArrayList;
 
 /**
- *
- * @author marcel
+ * This class represents an ivibot and it's functions
+ * @author Marcel
  */
 public class Podcar {
 
@@ -16,19 +16,31 @@ public class Podcar {
     private ArrayList<Passenger> passengers = new ArrayList<Passenger>();
     private ArrayList<Destination> destinations = new ArrayList<Destination>();
     private Status status = Podcar.Status.DISCONNECTED;
+	private Status tempStatus;
     private String macAddress;
     private boolean IR = false;
     public BluetoothService btService;
     private boolean connected = false;
 
+	// Possible statusses for the podcar
     public enum Status {DRIVING, WAITING, CHARGING, BLOCKED, DISCONNECTED};
+	
     private ArrayList<PodcarListener> listeners = new ArrayList<PodcarListener>();
 
+	/**
+	 * Constructor
+	 * Initialize a new ivibot.
+	 * Set the id to -1 so we know we still have to assign one.
+	 */
     Podcar() {
         this.id = -1;
         this.location = new Location();
     }
 
+	/**
+	 * Connect to the podcar through bluetooth
+	 * @return boolean
+	 */
     public boolean connect() {
         try {
             System.out.println("Connecting to " + this.macAddress + "...");
@@ -52,6 +64,9 @@ public class Podcar {
         }
     }
 
+	/**
+	 * Disconnect from the podcar
+	 */
     public void disconnect() {
         this.btService.disconnect();
         this.connected = false;
@@ -61,6 +76,10 @@ public class Podcar {
         System.out.println(this.getName() + " got disconnected.");
     }
 
+	/**
+	 * Send a command to the ivibot through bluetooth
+	 * @param command 
+	 */
     public void sendCommand(String command) {
         if (this.connected == true) {
             System.out.println("Sending command to " + this.macAddress + ": " + command);
@@ -70,51 +89,68 @@ public class Podcar {
         }
     }
 
+	/**
+	 * Process an incomming command
+	 * @param command 
+	 * @TODO fix this method
+	 */
     public void processCommand(String command) {
         System.out.println("Received command from "+this.getName()+": " + command);
 		
-        if (command.equals("ATDRV") && this.getStatus() != Podcar.Status.BLOCKED) {
-            if (this.getStatus() == Podcar.Status.WAITING) {
-                this.setStatus(Podcar.Status.DRIVING);
-            } else {
-                this.setStatus(Podcar.Status.WAITING);
-            }
-        } else if (command.equals("E666")) {
-            this.setStatus(Podcar.Status.BLOCKED);
-        } else if (command.equals("!E666")) {
-            this.setStatus(Podcar.Status.WAITING);
-        }
+		if(command.equals("IR_BLOCKED") || command.equals("EMERGENCY_BLOCKED"))
+		{
+			System.out.println(this.getName()+" got blocked");
+			
+			this.tempStatus = this.getStatus();
+			this.setStatus(Podcar.Status.BLOCKED);
+		}
+		else if(command.equals("UNBLOCKED"))
+		{
+			System.out.println(this.getName()+" got un-blocked");
+			
+			this.setStatus(this.tempStatus);
+			this.tempStatus = null;
+		}
+		else if(command.equals("WANT_HOME"))
+		{
+			System.out.println(this.getName()+" wants to go home!");
+		}
+		else if(command.equals("HOME"))
+		{
+			System.out.println(this.getName()+" is home");
+			
+			this.setStatus(Podcar.Status.CHARGING);
+		}
     }
 
-    public void turn(int direction) {
-        // turn
-    }
-	
+	/**
+	 * Stop the podcar
+	 */
 	public void stop()
 	{
 		this.sendCommand("#S");
 	}
 
-    public void blinkIR() {
-		
-    }
-	
-    void setIR(boolean b) {
-        this.IR = b;
-    }
-    
-    boolean getIR() {
-        return this.IR;
-    }
-
+	/**
+	 * Add a listener for this podcar
+	 * @param listener 
+	 */
     public void addListener(PodcarListener listener) {
         this.listeners.add(listener);
     }
 
+	/**
+	 * Remove a listener for this podcar
+	 * @param listener 
+	 */
     public void removeListener(PodcarListener listener) {
         this.listeners.remove(listener);
     }
 
+	/**
+	 * Broadcast a change in this podcar.
+	 * Call the update method for all of the listeners.
+	 */
     private void broadcastChange() {
         for (PodcarListener listener : this.listeners) {
             listener.update(this);
@@ -138,11 +174,24 @@ public class Podcar {
         this.name = name;
         broadcastChange();
     }
+	
+    void setIR(boolean b) {
+        this.IR = b;
+    }
+    
+    boolean getIR() {
+        return this.IR;
+    }
 
     public Location getLocation() {
         return location;
     }
 
+	/**
+	 * Set the location for the podcar
+	 * Also check if the podcar is near it's destination and should stop
+	 * @param location 
+	 */
     public void setLocation(Location location) {
         this.location = location;
         broadcastChange();
@@ -181,6 +230,11 @@ public class Podcar {
         return destinations;
     }
 
+	/**
+	 * Get the current destination if available
+	 * @return
+	 * @throws Exception 
+	 */
 	public Destination getCurrentDestination() throws Exception
 	{
 		if(this.destinations.isEmpty()) throw new Exception("No destinations");
@@ -202,18 +256,30 @@ public class Podcar {
         broadcastChange();
     }
 
+	/**
+	 * Check if the podcar is currently driving
+	 * @return 
+	 */
     public boolean isDriving() {
         return (status == Status.DRIVING);
     }
 
+	/**
+	 * Check if the podcar is available
+	 * @return 
+	 */
     public boolean isAvailable() {
-        return (status != Status.DRIVING && status != Status.BLOCKED);
+        return (status == Status.CHARGING);
     }
 
     public Status getStatus() {
         return this.status;
     }
 
+	/**
+	 * Return the status of the podcar as a string
+	 * @return status
+	 */
     public String getStatusString() {
         if (status == Status.CHARGING) {
             return "Charging";

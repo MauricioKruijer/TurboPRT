@@ -12,8 +12,8 @@ import turboprt.Podcar;
 import turboprt.PodcarListener;
 
 /**
- *
- * @author marcel
+ * UI Class to display and manage a podcars' destinations.
+ * @author Marcel
  */
 public class Destinations extends javax.swing.JFrame implements PodcarListener {
 
@@ -29,10 +29,15 @@ public class Destinations extends javax.swing.JFrame implements PodcarListener {
 
 		this.device = device;
 
+		// Register as listener for podcar object updates.
 		device.addListener(this);
 		update(device);
 	}
 
+	/**
+	 * Update the UI when the podcars' properties change
+	 * @param device 
+	 */
 	@Override
 	public void update(Podcar device) {
 		botname.setText(device.getName());
@@ -161,6 +166,11 @@ public class Destinations extends javax.swing.JFrame implements PodcarListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+	/**
+	 * Add a destination
+	 * This opens a new window
+	 * @param evt 
+	 */
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
 		try {
 			new AddDestination(this.device).setVisible(true);
@@ -169,6 +179,10 @@ public class Destinations extends javax.swing.JFrame implements PodcarListener {
 		}
     }//GEN-LAST:event_addButtonActionPerformed
 
+	/**
+	 * Remove a destination
+	 * @param evt 
+	 */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
 		if(this.jTable1.getSelectedRow() != -1)
 		{
@@ -177,36 +191,9 @@ public class Destinations extends javax.swing.JFrame implements PodcarListener {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
-		this.dispose();
+		this.dispose(); // Close the window
     }//GEN-LAST:event_closeButtonActionPerformed
 
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main(String args[]) {
-		/* Set the Nimbus look and feel */
-		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-		 * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-		 */
-		try {
-			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					javax.swing.UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(Destinations.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(Destinations.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(Destinations.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(Destinations.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		}
-		//</editor-fold>
-	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JLabel botname;

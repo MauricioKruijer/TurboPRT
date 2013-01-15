@@ -11,8 +11,7 @@ package turboprt;
 import java.util.ArrayList;
 import turboprt.Location;
 /**
- * 
- *
+ * This class represents an intersection on a track
  * @author Mark Blaas
  */
 public class Intersection {
@@ -67,7 +66,6 @@ public class Intersection {
         this.connected.add(connection);
         this.cost[connection.ID][this.ID] = cost;
         this.cost[this.ID][connection.ID] = cost;
-        
     }
     
 }

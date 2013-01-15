@@ -10,8 +10,8 @@ import turboprt.Location;
 import turboprt.Podcar;
 
 /**
- *
- * @author marcel
+ * UI Class to enter information for a new destination.
+ * @author Marcel
  */
 public class AddDestination extends javax.swing.JFrame {
 
@@ -134,6 +134,7 @@ public class AddDestination extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
 
+		// Build a destination object with the given data
 		Destination dest = new Destination();
 		dest.setLocation(new Location(
 				Integer.parseInt(this.x.getText()),
@@ -147,38 +148,14 @@ public class AddDestination extends javax.swing.JFrame {
 			case 2: dest.setType(Destination.Type.REST); break;
 		}
 		
+		// Add the destination
 		this.device.addDestination(dest);
 		System.out.println("Added destination "+dest);
 		
+		// Close window
 		this.dispose();
     }//GEN-LAST:event_addButtonActionPerformed
 
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main(String args[]) {
-		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-		 * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-		 */
-		try {
-			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					javax.swing.UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(AddDestination.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(AddDestination.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(AddDestination.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(AddDestination.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		}
-		//</editor-fold>
-	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JButton cancelButton;

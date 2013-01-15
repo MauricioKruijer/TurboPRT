@@ -9,8 +9,8 @@ import turboprt.Podcar;
 import turboprt.PodcarListener;
 
 /**
- *
- * @author marcel
+ * UI Class to display podcar information and options.
+ * @author Marcel
  */
 public class BotPanel extends javax.swing.JFrame implements PodcarListener {
 
@@ -23,12 +23,17 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
 		initComponents();
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+		// Register as listener for podcar object updates.
 		device.addListener(this);
 		update(device);
 		
 		this.device = device;
 	}
 	
+	/**
+	 * Update the UI when the podcars' properties change.
+	 * @param device 
+	 */
 	@Override
 	public void update(Podcar device) {
 		botname.setText(device.getName());
@@ -49,6 +54,7 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
 			destY.setText("0");
 		}
 		
+		// Enable the connect button if the podcar got disconnected.
 		connectButton.setEnabled(!device.isConnected());
 	}
 
@@ -273,17 +279,31 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+	/**
+	 * This method is fired when the stop button is pressed
+	 * A stop command will be send to the podcar.
+	 * @param evt 
+	 */
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
 		this.device.sendCommand("#S");
 		System.out.println("STAHP!!1!");
 		
     }//GEN-LAST:event_stopButtonActionPerformed
 
+	/**
+	 * This method is fired when the start button is pressed
+	 * A start command will be send to the podcar.
+	 * @param evt 
+	 */
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
 		this.device.sendCommand("#s");
 		System.out.println("Go! Go! Go!");
     }//GEN-LAST:event_startButtonActionPerformed
 
+	/**
+	 * Open the destinations UI when the destinations button is pressed.
+	 * @param evt 
+	 */
     private void destButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destButtonActionPerformed
 		try
 		{
@@ -295,45 +315,30 @@ public class BotPanel extends javax.swing.JFrame implements PodcarListener {
 		}
     }//GEN-LAST:event_destButtonActionPerformed
 
+	/**
+	 * Send the RAW command entered to the podcar.
+	 * @param evt 
+	 */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 		this.device.sendCommand(this.jTextArea1.getText());
     }//GEN-LAST:event_jButton1ActionPerformed
 
+	/**
+	 * Connect to the ivibot when the connect button is pressed.
+	 * @param evt 
+	 */
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
 		this.device.connect();
     }//GEN-LAST:event_connectButtonActionPerformed
 
+	/**
+	 * Close the window if the close button is pressed.
+	 * @param evt 
+	 */
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_closeButtonActionPerformed
 
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main(String args[]) {
-		/* Set the Nimbus look and feel */
-		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-		 * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-		 */
-		try {
-			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					javax.swing.UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(BotPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(BotPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(BotPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(BotPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		}
-		//</editor-fold>
-	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botname;
     private javax.swing.JButton closeButton;

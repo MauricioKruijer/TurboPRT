@@ -2,6 +2,10 @@ package turboprt;
 
 import java.util.*;
 
+/**
+ * This class represents an Adjacency Matrix and contains methods to find paths.
+ * @author Vincent Couzij
+ */
 public class AdjacencyMatrix {
 	
 	private GraphEdge [][] graph;

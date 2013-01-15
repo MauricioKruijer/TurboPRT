@@ -27,8 +27,8 @@ public class Track extends Thread implements WiimoteListener {
         /*  Intersection 1  */ {{0,10},{2,12},{6,10}}, //Intersect1 connections  {{from  1 to 0 cost 1}, {from 1 to 2 cost 1}}
         /*  Intersection 2  */ {{1,12},{3,8},{7,12}},
         /*  Intersection 3  */ {{2,8},{8,14}},
-        /*  Intersection 4  */ {{0,5},{5,5}},
-        /*  Intersection 5  */ {{0,10},{4,5},{6,10},{9,10}},
+        /*  Intersection 4  */ {{0,5},{5,6}},
+        /*  Intersection 5  */ {{0,10},{4,6},{6,10},{9,10}},
         /*  Intersection 6  */ {{1,10},{5,10},{7,10}},
         /*  Intersection 7  */ {{2,12},{6,10},{8,12},{10,12}},
         /*  Intersection 8  */ {{3,14},{7,12},{13,16}},
@@ -36,7 +36,7 @@ public class Track extends Thread implements WiimoteListener {
         /*  Intersection 10 */ {{7,12},{9,16},{11,10},{12,10}},
         /*  Intersection 11 */ {{10,10},{13,8}},
         /*  Intersection 12 */ {{10,10},{13,16}},
-        /*  Intersection 13 */ {{8,16},{11,8},{12,16}},
+        /*  Intersection 13 */ {{8,16},{11,8},{12,16}}
     };
 	
 	static ArrayList<Intersection> intersections;
